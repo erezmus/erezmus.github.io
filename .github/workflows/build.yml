@@ -31,5 +31,5 @@ jobs:
         with:
           publish_dir: ./public
           destination_dir: ./docs
-          publish_branch: main
+          publish_branch: gh-pages
           github_token: ${{ secrets.GITHUB_TOKEN }}
