@@ -128,7 +128,7 @@ provides a default if a component doesn't specify a layout.
 
 ## Using the layouts
 
-Now that we have our basic layouts set up We can create some page components:
+Now that we have our basic layouts set up, we can create some page components:
 
 *src/components/Home.vue*
 ```markup
