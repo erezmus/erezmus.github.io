@@ -2,7 +2,7 @@
 title: Doing layouts with Vue
 description: Learn how to a dynamic layout system with Vue
 date: '2021-02-15'
-tags: [vuejs, layout, dynamic]
+tags: [vuejs, layout, dynamic, router]
 ---
 
 Whenever you create a large application, you'll often have to deal with different layouts. In this post, we'll explore how we can leverage
