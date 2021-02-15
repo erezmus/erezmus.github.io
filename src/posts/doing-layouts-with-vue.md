@@ -230,9 +230,12 @@ export default {
 ## Updating the layout
 
 So how do we use this option to update our layout component? The answer is to add a global navigation guard
-to our view router configuration:
+to our router configuration:
 
+*src/main.js*
 ```js
+
+//...
 const router = new VueRouter({ routes });
 const layout = new Vue.observable({ name: "standard-layout" });
 
@@ -248,7 +251,7 @@ router.afterEach((to) => {
     router.layout.name = layoutName;
   }
 });
-
+//...
 ```
 
 There's a few things going on here, so let's go step by step. We first create a new reactive object using
