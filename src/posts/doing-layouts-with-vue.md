@@ -206,7 +206,7 @@ So far so good. Let's see the blog page:
 
 ![Blog Page](/images/doing-layouts-with-vue/02-blog-page.png)
 
-We can see that the it's not using the `BlogLayout` layout component, which is what we expect as don't
+We can see that the it's not using the `BlogLayout` layout component, which is what we expect as we don't
 have a way for the page components to set the `layout` property in the `App` component.
 
 The way we'll do this is by setting an option called `layout` in our components:
@@ -295,7 +295,8 @@ if no components matched. The next step is to get the layout from the component 
 the reactive `layout.name` property.
 
 
-As a last step, we need to change our `App` component to use the router's layout property:
+As a last step, we need to change our `App` component to use the router's layout property instead of the layout
+data property as done earlier.
 
 *src/App.vue*
 ```markup
