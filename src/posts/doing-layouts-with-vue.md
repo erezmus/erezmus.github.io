@@ -101,7 +101,7 @@ Lets look at the code in detail:
 </component>
 ```
 
-Here we are using the special `component` tag which is Vue's way of implementing dynamic components (add link to vue doc).
+Here we are using the special `component` tag which is Vue's way of implementing [dynamic components](https://vuejs.org/v2/guide/components.html#Dynamic-Components).
 The `is` property determines which component gets rendered, so whenever that value changes, the component gets
 re-rendered.
 
