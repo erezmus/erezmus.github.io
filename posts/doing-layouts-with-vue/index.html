@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="canonical" href=https://eleventyduo.netlify.app/posts/doing-layouts-with-vue/>
+
+    <link href="/assets/main.990a5d292b2eafcd9999.css" rel="stylesheet" />
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans&display=swap" rel="stylesheet">
+
+    <title>
+      Doing layouts with Vue
+      
+         | Erezmus
+      
+    </title>
+
+    <link rel="icon" type= “image/x-icon” href="/images/favicon.ico">
+
+    <meta property="og:title" content="Doing layouts with Vue">
+    <meta property="og:site_name" content="Erezmus"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:url" content="https://eleventyduo.netlify.app/posts/doing-layouts-with-vue/"/>
+    <meta name="twitter:card" content="summary_large_image">
+
+    
+
+    
+    
+    
+      <meta name="description" content="Learn how to a dynamic layout system with Vue">
+      <meta property="og:description" content="Learn how to a dynamic layout system with Vue">
+      <meta name="description" content="Learn how to a dynamic layout system with Vue"/>
+    
+
+    
+      
+    
+    
+      <meta property="og:image" content="https://eleventyduo.netlify.app/images/default-social-image.png"/>
+      <meta name="twitter:image" content="https://eleventyduo.netlify.app/images/default-social-image.png"/>
+    
+
+  </head>
+  <body>
+    <div class="layout-wrapper">
+
+      <header class="header">
+        <div class="header__content">
+          <h1 class="site-title">
+            <a href=/>
+              Erezmus
+            </a>
+          </h1>
+
+          
+            <nav class="nav">
+              <ul class="nav__list">
+                
+                  
+                  
+
+                  
+
+                  
+
+                  <li class="nav-item">
+                    <a href="/blog"  >Blog</a>
+                  </li>
+                
+                  
+                  
+
+                  
+
+                  
+
+                  <li class="nav-item">
+                    <a href="/about"  >About</a>
+                  </li>
+                
+              </ul>
+            </nav>
+
+          
+
+        </div>
+      </header>
+
+      <main class="main">
+        
+<article class="post">
+  <header class="post__header">
+    <h1>Doing layouts with Vue</h1>
+    <div class="post__details">
+      <time datetime="2021-02-15">
+        15 Feb 2021
+      </time>
+      <span> | </span>
+      <span>3 min read</span>
+    </div>
+  </header>
+
+  <main class="post__content">
+    <p>Whenever you create a large application, you'll often have to deal with different layouts. In this post, we'll explore how we can leverage
+Vue's powerful component features that allows each component to specify which layout to use.</p>
+<p>We are going to be using a standard Vue 2 setup with the vue router package installed. The code is available <a href="https://codesandbox.io/s/vue-doing-layouts-with-vue-gxf1c" target="_blank">here</a>.</p>
+<h2>Layout components</h2>
+<p>As an example, let's say that we are building a site that has two different layouts: one for a standard page and one for blog posts.</p>
+<p><em>src/layouts/StandardLayout.vue</em></p>
+<pre class="language-markup"><code class="language-markup"><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span><br>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h1</span><span class="token punctuation">></span></span>My Website<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h1</span><span class="token punctuation">></span></span><br>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span><br>      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>router-link</span> <span class="token attr-name">to</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>/<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Home<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>router-link</span><span class="token punctuation">></span></span> |<br>      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>router-link</span> <span class="token attr-name">to</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>/blog<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Blog<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>router-link</span><span class="token punctuation">></span></span><br>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span><br>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>slot</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>slot</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span><br><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script"><span class="token language-javascript"><br><span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span><br>  name<span class="token operator">:</span> <span class="token string">"StandardLayout"</span><span class="token punctuation">,</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span><br></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span></code></pre>
+<p>The <code>StandardLayout</code> component simply offers a default slot for other components to display their content.</p>
+<p><em>src/layouts/BlogLayout.vue</em></p>
+<pre class="language-markup"><code class="language-markup"><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span><br>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span><br>      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>a</span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>/blog<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Back to blog<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>a</span><span class="token punctuation">></span></span><br>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span><br>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>slot</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>slot</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span><br><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script"><span class="token language-javascript"><br><span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span><br>  name<span class="token operator">:</span> <span class="token string">'BlogLayout'</span><br><span class="token punctuation">}</span><br></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span></code></pre>
+<h2>Setting the layout</h2>
+<p>The next step is to modify the root App component and wrap the <code>router-view</code> with a dynamic component:</p>
+<p><em>src/App.vue</em></p>
+<pre class="language-markup"><code class="language-markup"><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>app<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><br>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>component</span> <span class="token attr-name">:is</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>layout<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><br>      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>router-view</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>router-view</span><span class="token punctuation">></span></span><br>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>component</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span><br><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script"><span class="token language-javascript"><br><span class="token keyword">import</span> StandardLayout <span class="token keyword">from</span> <span class="token string">"./layouts/StandardLayout"</span><span class="token punctuation">;</span><br><span class="token keyword">import</span> BlogLayout <span class="token keyword">from</span> <span class="token string">"./layouts/BlogLayout"</span><span class="token punctuation">;</span><br><br><span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span><br>  name<span class="token operator">:</span> <span class="token string">"App"</span><span class="token punctuation">,</span><br>  components<span class="token operator">:</span> <span class="token punctuation">{</span><br>    <span class="token string">"standard-layout"</span><span class="token operator">:</span> StandardLayout<span class="token punctuation">,</span><br>    <span class="token string">"blog-layout"</span><span class="token operator">:</span> BlogLayout<span class="token punctuation">,</span><br>  <span class="token punctuation">}</span><span class="token punctuation">,</span><br>  <span class="token function">data</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token keyword">return</span> <span class="token punctuation">{</span><br>      layout<span class="token operator">:</span> <span class="token string">"standard-layout"</span><span class="token punctuation">,</span><br>    <span class="token punctuation">}</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><span class="token punctuation">,</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span><br></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span></code></pre>
+<p>Lets look at the code in detail:</p>
+<pre class="language-html"><code class="language-html"><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>component</span> <span class="token attr-name">:is</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>layout<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>router-view</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>router-view</span><span class="token punctuation">></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>component</span><span class="token punctuation">></span></span></code></pre>
+<p>Here we are using the special <code>component</code> tag which is Vue's way of implementing dynamic components (add link to vue doc).
+The <code>is</code> property determines which component gets rendered, so whenever that value changes, the component gets
+re-rendered.</p>
+<p>The advantage of this technique is that when navigating from one component to another with the same layout,
+the whole layout component doesn't get re-rendered.</p>
+<pre class="language-js"><code class="language-js"><br>  components<span class="token operator">:</span> <span class="token punctuation">{</span><br>    <span class="token string">"standard-layout"</span><span class="token operator">:</span> StandardLayout<span class="token punctuation">,</span><br>    <span class="token string">"blog-layout"</span><span class="token operator">:</span> BlogLayout<span class="token punctuation">,</span><br>  <span class="token punctuation">}</span><span class="token punctuation">,</span><br>  <span class="token function">data</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token keyword">return</span> <span class="token punctuation">{</span><br>      layout<span class="token operator">:</span> <span class="token string">"standard-layout"</span><span class="token punctuation">,</span><br>    <span class="token punctuation">}</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><span class="token punctuation">,</span></code></pre>
+<p>Here, we register the layout components to tag names and set the <code>layout</code> data variable to the standard layout tag. This
+provides a default if a component doesn't specify a layout.</p>
+<h2>Using the layouts</h2>
+<p>Now that we have our basic layouts set up We can create some page components:</p>
+<p><em>src/components/Home.vue</em></p>
+<pre class="language-markup"><code class="language-markup"><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span><br>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h2</span><span class="token punctuation">></span></span>Home<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h2</span><span class="token punctuation">></span></span><br>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span><span class="token punctuation">></span></span>This is the home page<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span><br><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script"><span class="token language-javascript"><br><span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span><br>  name<span class="token operator">:</span> <span class="token string">"Home"</span><span class="token punctuation">,</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span><br></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span></code></pre>
+<p>And a basic blog page</p>
+<p><em>src/components/Blog.vue</em></p>
+<pre class="language-markup"><code class="language-markup"><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span><br>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h1</span><span class="token punctuation">></span></span>Blog<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h1</span><span class="token punctuation">></span></span><br>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h2</span><span class="token punctuation">></span></span>First Post<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h2</span><span class="token punctuation">></span></span><br>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span><span class="token punctuation">></span></span>First blog post<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script"><span class="token language-javascript"><br><span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span><br>  name<span class="token operator">:</span> <span class="token string">"Blog"</span><span class="token punctuation">,</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span><br></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span></code></pre>
+<p>We'll register the routes in the main entry point file of our app:</p>
+<p><em>src/main.js</em></p>
+<pre class="language-js"><code class="language-js"><br><span class="token keyword">import</span> Vue <span class="token keyword">from</span> <span class="token string">"vue"</span><span class="token punctuation">;</span><br><span class="token keyword">import</span> VueRouter <span class="token keyword">from</span> <span class="token string">"vue-router"</span><span class="token punctuation">;</span><br><span class="token keyword">import</span> App <span class="token keyword">from</span> <span class="token string">"./App.vue"</span><span class="token punctuation">;</span><br><span class="token keyword">import</span> Home <span class="token keyword">from</span> <span class="token string">"./components/Home.vue"</span><span class="token punctuation">;</span><br><span class="token keyword">import</span> Blog <span class="token keyword">from</span> <span class="token string">"./components/Blog.vue"</span><span class="token punctuation">;</span><br><br>Vue<span class="token punctuation">.</span>config<span class="token punctuation">.</span>productionTip <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span><br><br>Vue<span class="token punctuation">.</span><span class="token function">use</span><span class="token punctuation">(</span>VueRouter<span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token keyword">const</span> routes <span class="token operator">=</span> <span class="token punctuation">[</span><br>  <span class="token punctuation">{</span> path<span class="token operator">:</span> <span class="token string">"/"</span><span class="token punctuation">,</span> component<span class="token operator">:</span> Home <span class="token punctuation">}</span><span class="token punctuation">,</span><br>  <span class="token punctuation">{</span> path<span class="token operator">:</span> <span class="token string">"/blog"</span><span class="token punctuation">,</span> component<span class="token operator">:</span> Blog <span class="token punctuation">}</span><br><span class="token punctuation">]</span><span class="token punctuation">;</span><br><br><span class="token keyword">const</span> router <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">VueRouter</span><span class="token punctuation">(</span><span class="token punctuation">{</span> routes <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br><span class="token keyword">new</span> <span class="token class-name">Vue</span><span class="token punctuation">(</span><span class="token punctuation">{</span><br>  router<span class="token punctuation">,</span><br>  <span class="token function-variable function">render</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token parameter">h</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token function">h</span><span class="token punctuation">(</span>App<span class="token punctuation">)</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">$mount</span><span class="token punctuation">(</span><span class="token string">"#app"</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<h2>Specifying the layout</h2>
+<p>Navigating to the home page, we see this:</p>
+<p><img src="/images/doing-layouts-with-vue/01-home-page.png" alt="Home Page"></p>
+<p>So far so good. Let's see the blog page:</p>
+<p><img src="/images/doing-layouts-with-vue/02-blog-page.png" alt="Blog Page"></p>
+<p>We can see that the it's not using the <code>BlogLayout</code> layout component, which is what we expect as don't
+have a way for the page components to set the <code>layout</code> property in the <code>App</code> component.</p>
+<p>The way we'll do this is by setting an option called <code>layout</code> in our components:</p>
+<p><em>src/components/Home.vue</em></p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span><br>  name<span class="token operator">:</span> <span class="token string">"Home"</span><span class="token punctuation">,</span><br>  layout<span class="token operator">:</span> <span class="token string">'standard-layout'</span><span class="token punctuation">,</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+<p><em>src/components/Blog.vue</em></p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span><br>  name<span class="token operator">:</span> <span class="token string">"Blog"</span><span class="token punctuation">,</span><br>  layout<span class="token operator">:</span> <span class="token string">'blog-layout'</span><span class="token punctuation">,</span><br><span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+<h2>Updating the layout</h2>
+<p>So how do we use this option to update our layout component? The answer is to add a global navigation guard
+to our view router configuration:</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> router <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">VueRouter</span><span class="token punctuation">(</span><span class="token punctuation">{</span> routes <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><span class="token keyword">const</span> layout <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Vue<span class="token punctuation">.</span>observable</span><span class="token punctuation">(</span><span class="token punctuation">{</span> name<span class="token operator">:</span> <span class="token string">"standard-layout"</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>router<span class="token punctuation">.</span>layout <span class="token operator">=</span> layout<span class="token punctuation">;</span><br><br>router<span class="token punctuation">.</span><span class="token function">afterEach</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">to</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token keyword">if</span> <span class="token punctuation">(</span>to<span class="token punctuation">.</span>matched<span class="token punctuation">.</span>length <span class="token operator">===</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token keyword">return</span> <span class="token string">"standard-layout"</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><br>  <span class="token keyword">const</span> layoutName <span class="token operator">=</span> to<span class="token punctuation">.</span>matched<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>components<span class="token punctuation">.</span>default<span class="token punctuation">.</span>layout<span class="token punctuation">;</span><br>  <span class="token keyword">if</span> <span class="token punctuation">(</span>layoutName<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    router<span class="token punctuation">.</span>layout<span class="token punctuation">.</span>name <span class="token operator">=</span> layoutName<span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br></code></pre>
+<p>There's a few things going on here, so let's go step by step. We first create a new reactive object using
+Vue's <code>observable</code> method:</p>
+<pre class="language-js"><code class="language-js"><br><span class="token keyword">const</span> layout <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Vue<span class="token punctuation">.</span>observable</span><span class="token punctuation">(</span><span class="token punctuation">{</span> name<span class="token operator">:</span> <span class="token string">"standard-layout"</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>And we then attach it to the router object</p>
+<pre class="language-js"><code class="language-js"><br>router<span class="token punctuation">.</span>layout <span class="token operator">=</span> layout<span class="token punctuation">;</span></code></pre>
+<p>The reactive object acts like a very lightweight data store for specifying our layout. We could have used
+something more sophisticated, like an injected plugin or even a Vuex store module, but for our purposes this will suffice.</p>
+<p>This means that we can use the <code>$router.layout</code> property in any component and changing the <code>name</code> member will
+update the layout.</p>
+<p>Now let's have a look at the navigation guard:</p>
+<pre class="language-js"><code class="language-js"><br>router<span class="token punctuation">.</span><span class="token function">afterEach</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">to</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span><br>  <span class="token keyword">if</span> <span class="token punctuation">(</span>to<span class="token punctuation">.</span>matched<span class="token punctuation">.</span>length <span class="token operator">===</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    <span class="token keyword">return</span> <span class="token string">"standard-layout"</span><span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><br>  <span class="token keyword">const</span> layoutName <span class="token operator">=</span> to<span class="token punctuation">.</span>matched<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>components<span class="token punctuation">.</span>default<span class="token punctuation">.</span>layout<span class="token punctuation">;</span><br>  <span class="token keyword">if</span> <span class="token punctuation">(</span>layoutName<span class="token punctuation">)</span> <span class="token punctuation">{</span><br>    router<span class="token punctuation">.</span>layout<span class="token punctuation">.</span>name <span class="token operator">=</span> layoutName<span class="token punctuation">;</span><br>  <span class="token punctuation">}</span><br><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>We first check if we actually matched a component during the routing, and return the default layout name
+if no components matched. The next step is to get the layout from the component object and then update
+the reactive <code>layout.name</code> property.</p>
+<p>As a last step, we need to change our <code>App</code> component to use the router's layout property:</p>
+<p><em>src/App.vue</em></p>
+<pre class="language-markup"><code class="language-markup"><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>app<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><br>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>component</span> <span class="token attr-name">:is</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>$router.layout.name<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><br>      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>router-view</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>router-view</span><span class="token punctuation">></span></span><br>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>component</span><span class="token punctuation">></span></span><br>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span><br><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span></code></pre>
+<p>Now if we check, the blog page, we can see it is using the correct blog layout:</p>
+<p><img src="/images/doing-layouts-with-vue/03-blog-page.png" alt="Blog Page"></p>
+<p>And thats about it. An extra step could be to ensure that the layout actually exists</p>
+
+  </main>
+
+  <aside class="post__aside">
+    <div class="post__tags">
+      
+        
+        <a href="/tags/vuejs/">#vuejs</a>
+      
+        
+        <a href="/tags/layout/">#layout</a>
+      
+        
+        <a href="/tags/dynamic/">#dynamic</a>
+      
+        
+        <a href="/tags/router/">#router</a>
+      
+    </div>
+
+    <nav class="post__pagination">
+    </nav>
+  </aside>
+
+</article>
+      </main>
+
+    <script src="/assets/main.31d6cfe0d16ae931b73c.js"></script>
+  </body>
+</html>
