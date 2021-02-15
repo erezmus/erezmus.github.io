@@ -110,7 +110,7 @@ module.exports = function (eleventyConfig) {
   return {
     dir: {
       input: 'src',
-      output: 'docs',
+      output: 'public',
       includes: 'includes',
       data: 'data',
       layouts: 'layouts',
