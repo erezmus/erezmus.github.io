@@ -14,9 +14,9 @@
       "external": false
     },
     {
-      "text": "About",
-      "url": "/about",
-      "external": false
+      "text": "Github",
+      "url": "https://github.com/erezmus",
+      "external": true
     }
   ],
   "socialLinks": [
