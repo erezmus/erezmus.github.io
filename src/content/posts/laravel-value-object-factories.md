@@ -3,6 +3,7 @@ title: 'Laravel value object factories'
 published: 2025-09-30
 draft: false
 description: 'How to leverage laravel factories for value object classes'
+updated: 2025-10-01
 tags: ['PHP', 'Laravel']
 ---
 
@@ -87,7 +88,7 @@ Running the test, we get this error:
 ```sh
 /app # php artisan test tests/Unit/ContactTest.php
 
-   FAIL  Tests\Unit\ContactTest
+  FAIL  Tests\Unit\ContactTest
   ⨯ contact → make a contact                                                                                                                                 0.52s
   ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
    FAILED  Tests\Unit\ContactTest > `contact` → make a contact                                                                                          TypeError
@@ -150,12 +151,12 @@ What if we want multiple Contact instances in our tests:
 
 ```php
 //...
-    test('make multiple contacts', function () {
-        $contacts = Contact::factory()->count(2)->make();
+test('make multiple contacts', function () {
+    $contacts = Contact::factory()->count(2)->make();
 
-        expect($contacts[0]->name)->not->toBe(null);
-        expect($contacts[0]->email)->not->toBe(null);
-    });
+    expect($contacts[0]->name)->not->toBe(null);
+    expect($contacts[0]->email)->not->toBe(null);
+});
 //...
 ```
 
@@ -195,11 +196,11 @@ We now have another issue:
 Now the issue is that Laravel's `Factory` base class instantiates a model without any attributes when creating multiple instances:
 
 ```php
-            //...
-            $instances = $this->newModel()->newCollection(array_map(function () use ($parent) {
-                return $this->makeInstance($parent);
-            }, range(1, $this->count)));
-            //...
+//...
+$instances = $this->newModel()->newCollection(array_map(function () use ($parent) {
+    return $this->makeInstance($parent);
+}, range(1, $this->count)));
+//...
 ```
 
 The solution is to override the `make` method as well:
@@ -207,33 +208,31 @@ The solution is to override the `make` method as well:
 `database/factories/ContactFactory.php`
 
 ```php
-    // ...
-    public function make($attributes = [], ?\Illuminate\Database\Eloquent\Model $parent = null)
-    {
-        if (! empty($attributes)) {
-            return $this->state($attributes)->make([], $parent);
-        }
-
-        if ($this->count === null) {
-            return $this->newModel($this->getExpandedAttributes($parent));
-        }
-
-        if ($this->count < 1) {
-            return new \Illuminate\Support\Collection;
-        }
-
-        return new \Illuminate\Support\Collection(array_map(function () use ($parent) {
-            return $this->newModel($this->getExpandedAttributes($parent));
-        }, range(1, $this->count)));
+// ...
+public function make($attributes = [], ?\Illuminate\Database\Eloquent\Model $parent = null)
+{
+    if (! empty($attributes)) {
+        return $this->state($attributes)->make([], $parent);
     }
+
+    if ($this->count === null) {
+        return $this->newModel($this->getExpandedAttributes($parent));
+    }
+
+    if ($this->count < 1) {
+        return new \Illuminate\Support\Collection;
+    }
+
+    return new \Illuminate\Support\Collection(array_map(function () use ($parent) {
+        return $this->newModel($this->getExpandedAttributes($parent));
+    }, range(1, $this->count)));
+}
 ```
 
-This is a simplified version of the base Factory method that preservers the necessary parts of the parent method that is
-tailored for value objects.
+This version of `make` retains the functionality that we need from the parent one, for example anything related to
+relationships.
 
-````
-
-The test now works properly:
+The test now passes:
 
 ```sh
 /app # php artisan test tests/Unit/ContactTest.php -vvv
@@ -245,17 +244,16 @@ The test now works properly:
   Tests:    2 passed (5 assertions)
   Duration: 1.19s
 
-````
+```
 
 ## Refactoring
 
-We can now create a base class to keep the common functionality and we can overrided the `create` method to simply call `make`. Value Objects are not stored in the database so we can avoid other errors by disabling the saving to the database.
+We can now create a base class to keep the common functionality as well as override the `create` method to simply call `make`. Value Objects are not stored in the database so we can avoid other errors by disabling that behaviour.
 
 `database/factories/ValueObjectFactory.php`
 
 ```php
 <?php
-
 
 namespace Database\Factories;
 
