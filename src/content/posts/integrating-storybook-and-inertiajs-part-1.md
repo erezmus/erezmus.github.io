@@ -3,7 +3,7 @@ title: "Integrating Storybook and Inertia.js - Part 1"
 published: 2025-09-03
 updated: 2026-01-30
 draft: false
-description: "A guide to previwing components that rely on inertia.js functionality. In Part 1, we look at mocking page props."
+description: "A guide to previewing components that rely on inertia.js functionality. In Part 1, we look at mocking page props."
 series: "Storybook and Inertia.js"
 tags: ["typescript", "inertiajs", "storybook"]
 ---

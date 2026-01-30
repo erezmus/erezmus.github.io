@@ -2,7 +2,7 @@
 title: "Integrating Storybook and Inertia.js - Part 2"
 published: 2026-01-30
 draft: false
-description: "A guide to previwing components that rely on inertia.js functionality. In Part 2, we look at mocking the router"
+description: "A guide to previewing components that rely on inertia.js functionality. In Part 2, we look at mocking the router"
 series: "Storybook and Inertia.js"
 tags: ["typescript", "inertiajs", "storybook"]
 ---
