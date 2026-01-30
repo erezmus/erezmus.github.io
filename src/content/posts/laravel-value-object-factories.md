@@ -4,7 +4,6 @@ published: 2025-09-30
 updated: 2026-01-30
 draft: false
 description: "How to leverage laravel factories for value object classes"
-updated: 2025-10-01
 tags: ["PHP", "Laravel"]
 ---
 
