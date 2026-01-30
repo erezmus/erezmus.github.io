@@ -1,25 +1,25 @@
 ---
-title: 'Laravel value object factories'
+title: "Laravel value object factories"
 published: 2025-09-30
+updated: 2026-01-30
 draft: false
-description: 'How to leverage laravel factories for value object classes'
+description: "How to leverage laravel factories for value object classes"
 updated: 2025-10-01
-tags: ['PHP', 'Laravel']
+tags: ["PHP", "Laravel"]
 ---
 
 ## Introduction
 
-If you are not familiar with value objects, they are immutable objects that store values. They do not
-have any functionality nor does a value object have an identiy field.
+If you are not familiar with value objects, they are immutable objects that
+store values. They do not have any functionality nor does a value object have an
+identiy field.
 
-When developing tests or seeders for your Laravel applications, it's useful to be able to generate fake
-data for value objects as well as models.
+When developing tests or seeders for your Laravel applications, it's useful to
+be able to generate fake data for value objects as well as models.
 
 Let's take the example of a contact value object:
 
-`app/ValueObjects/Contact.php`
-
-```php
+```php title="app/ValueObjects/Contact.php"
 <?php
 
 namespace App\ValueObjects;
@@ -35,14 +35,11 @@ class Contact
 
     public function __construct(public string $name, public string $email) {}
 }
-
 ```
 
 Our factory can then be:
 
-`database/factories/ContactFactory.php`
-
-```php
+```php title="database/factories/ContactFactory.php"
 <?php
 
 namespace Database\Factories;
@@ -59,14 +56,11 @@ class ContactFactory extends Factory
         ];
     }
 }
-
 ```
 
 Let's use it in a test:
 
-`tests/Unit/ContactTest.php`
-
-```php
+```php title="tests/Unit/ContactTest.php"
 <?php
 
 use App\ValueObjects\Contact;
@@ -79,8 +73,6 @@ describe('contact', function () {
         expect($contact->email)->not->toBe(null);
     });
 });
-
-
 ```
 
 Running the test, we get this error:
@@ -95,11 +87,10 @@ Running the test, we get this error:
   App\ValueObjects\Contact::__construct(): Argument #1 ($name) must be of type string, array given, called in /app/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Factories/Factory.php on line 851
 ```
 
-The problem is that Eloquent factories instantiate the target object by passing an associative array when instantiating the model:
+The problem is that Eloquent factories instantiate the target object by passing
+an associative array when instantiating the model:
 
-`vendor/laravel/framework/src/Illuminate/Database/Eloquent/Factories/Factory.php`
-
-```php
+```php title="vendor/laravel/framework/src/Illuminate/Database/Eloquent/Factories/Factory.php"
 //...
 public function newModel(array $attributes = [])
 {
@@ -112,11 +103,9 @@ public function newModel(array $attributes = [])
 
 ## Single instance
 
-We need to override the `newModel` method. Let's modify our factory to override.
+We need to override the `newModel` method. Let's modify our factory:
 
-`database/factories/ContactFactory.php`
-
-```php
+```php title="database/factories/ContactFactory.php"
 class ContactFactory extends Factory
 {
     //... rest of ContactFactory
@@ -128,13 +117,12 @@ class ContactFactory extends Factory
         return new $model($attributes['name'], $attributes['email']);
     }
 }
-
 ```
 
 Re running the test now works:
 
 ```sh
-/app # php artisan test tests/Unit/ContactTest.php -vvv
+$ php artisan test tests/Unit/ContactTest.php -vvv
 
   PASS  Tests\Unit\ContactTest
   ✓ contact → make a contact                                                                                                                                 0.66s
@@ -147,9 +135,7 @@ Re running the test now works:
 
 What if we want multiple Contact instances in our tests:
 
-`tests/Unit/ContactsTest.php`
-
-```php
+```php title="tests/Unit/ContactsTest.php"
 //...
 test('make multiple contacts', function () {
     $contacts = Contact::factory()->count(2)->make();
@@ -163,7 +149,7 @@ test('make multiple contacts', function () {
 We now have another issue:
 
 ```sh
-/app # php artisan test tests/Unit/ContactTest.php -vvv
+$ php artisan test tests/Unit/ContactTest.php -vvv
 
    FAIL  Tests\Unit\ContactTest
   ✓ contact → make a contact                                                                                                                                 0.53s
@@ -193,7 +179,8 @@ We now have another issue:
   Duration: 0.67s
 ```
 
-Now the issue is that Laravel's `Factory` base class instantiates a model without any attributes when creating multiple instances:
+Now the issue is that Laravel's `Factory` base class instantiates a model
+without any attributes when creating multiple instances:
 
 ```php
 //...
@@ -205,9 +192,7 @@ $instances = $this->newModel()->newCollection(array_map(function () use ($parent
 
 The solution is to override the `make` method as well:
 
-`database/factories/ContactFactory.php`
-
-```php
+```php title="database/factories/ContactFactory.php"
 // ...
 public function make($attributes = [], ?\Illuminate\Database\Eloquent\Model $parent = null)
 {
@@ -229,13 +214,13 @@ public function make($attributes = [], ?\Illuminate\Database\Eloquent\Model $par
 }
 ```
 
-This version of `make` retains the functionality that we need from the parent one, for example anything related to
-relationships.
+This version of `make` retains the functionality that we need from the parent
+one, for example anything related to relationships.
 
 The test now passes:
 
 ```sh
-/app # php artisan test tests/Unit/ContactTest.php -vvv
+$ php artisan test tests/Unit/ContactTest.php -vvv
 
    PASS  Tests\Unit\ContactTest
   ✓ contact → make a contact                                                                                                                       0.95s
@@ -243,16 +228,15 @@ The test now passes:
 
   Tests:    2 passed (5 assertions)
   Duration: 1.19s
-
 ```
 
 ## Refactoring
 
-We can now create a base class to keep the common functionality as well as override the `create` method to simply call `make`. Value Objects are not stored in the database so we can avoid other errors by disabling that behaviour.
+We can now create a base class to keep the common functionality as well as
+override the `create` method to simply call `make`. Value Objects are not stored
+in the database so we can avoid other errors by disabling that behaviour.
 
-`database/factories/ValueObjectFactory.php`
-
-```php
+```php title="database/factories/ValueObjectFactory.php"
 <?php
 
 namespace Database\Factories;
@@ -306,10 +290,8 @@ abstract class ValueObjectFactory extends Factory
 
 And we update our factory accordingly.
 
-`database/factories/ContactFactory.php`
-
-```php
-<?php
+```php title="database/factories/ContactFactory.php"
+<?php 
 
 namespace Database\Factories;
 
