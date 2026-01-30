@@ -121,7 +121,7 @@ article img {
   @apply text-base/7;
 
   code:not(.expressive-code code) {
-    @apply text-sm text-foreground/90 bg-foreground/5 px-2 py-1 rounded-lg whitespace-nowrap inline-block max-w-full overflow-x-auto;
+    @apply text-sm text-foreground/90 bg-foreground/5 px-2 rounded-lg whitespace-nowrap inline-block max-w-full overflow-x-auto;
   }
 
   & > *:not(div.expressive-code, img, figure, video, hr, blockquote, aside),
